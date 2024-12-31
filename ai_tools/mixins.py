@@ -6,7 +6,7 @@ from langchain_google_genai import GoogleGenerativeAI
 import pickle
 
 class BaseClient:
-    api_key = 'AIzaSyBsGMZsON1lk_26i1OM6KliRMcqdvdRJ30'
+    api_key = settings.GOOGLE_API_KEY
     model = 'gemini-1.5-pro-latest'
     llm = GoogleGenerativeAI(model=model, google_api_key=api_key, verbose=True)
 
