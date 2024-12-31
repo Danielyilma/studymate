@@ -6,7 +6,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course 
-        fields = ["id", "title", "created_at"]
+        fields = ["id", "title", "created_at", "file"]
     
     def create(self, validated_data):
         instance = Course.objects.create(**validated_data)
