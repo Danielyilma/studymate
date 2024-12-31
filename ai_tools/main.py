@@ -37,10 +37,10 @@ class AI(BaseClient):
         docs = [Document(page_content=t)]
         result = None
         
-        if task == "study":
+        if task == "study-card":
             result = self.generate_study_card(docs, self.llm)
             result = json.loads(result)
-        elif task == "generate_mcq_from_text":
+        elif task == "mutiple-choice":
             result = self.generate_mcq_from_text(docs, self.llm)
             result = json.loads(result)
         else:

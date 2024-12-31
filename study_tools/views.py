@@ -1,7 +1,11 @@
-from rest_framework import generics
+from rest_framework import generics, status
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from .serializers import CourseSerializer, QuestionSerializer, CourseDetailsSerializer
+from django.shortcuts import get_object_or_404
+from .serializers import CourseSerializer, QuestionSerializer, CourseDetailsSerializer, CardSerializer
 from .models import Course
+from .task import generate_mutiple_questions, generate_cards
 
 class CourseCreateView(generics.CreateAPIView):
     permission_classes = [AllowAny]
@@ -21,6 +25,37 @@ class CourseRetrieveView(generics.RetrieveAPIView):
 
 
 
-class QuestionGenerateView(generics.CreateAPIView):
+class QuestionGenerateView(APIView):
     permission_classes = [AllowAny]
     serializer_class = QuestionSerializer
+
+    def post(self, request, *args, **kwargs):
+        id = kwargs.get('id')
+
+        course = get_object_or_404(Course, id=id)
+        
+        try:
+            generate_mutiple_questions(course)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+        return Response({"status": "success"}, status=status.HTTP_200_OK)
+
+
+class CardGenerateView(APIView):
+    permission_classes = [AllowAny]
+    serializer_class = CardSerializer
+
+    def post(self, request, *args, **kwargs):
+        id = kwargs.get('id')
+
+        course = get_object_or_404(Course, id=id)
+        
+        try:
+            generate_cards(course)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+        return Response({"status": "success"}, status=status.HTTP_200_OK)
+
+
