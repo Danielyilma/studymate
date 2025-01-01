@@ -12,7 +12,7 @@ refine_prompt_template = """
             """
 
 mcq_prompt_template = """
-    Based on the following text, generate 5 multiple-choice questions (MCQs) along with the correct answers. 
+    Based on the following text, generate 15 multiple-choice questions (MCQs) along with the correct answers. 
     The questions should cover key concepts from the text and be in the following format:
 
     Please respond this JSON format and starting with `[`. Do not include any labels, titles, or prefixes 

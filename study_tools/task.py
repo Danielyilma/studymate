@@ -29,4 +29,33 @@ def generate_cards(course):
                     answer=card.get('answer')
                 )
 
+def get_custom_response(data):
+    questions = []
+    cards = []
+    temp = []
+    # print(data.get('questions')[0])
+    for i, question in enumerate(data.get('questions')):
+        temp.append(question)
+        if i and i % 15 == 0:
+            questions.append(temp)
+            temp = []
+
+    if temp:
+        questions.append(temp)
+
+    temp = []
+    for i, card in enumerate(data.get("cards")):
+        temp.append(card)
+        if i and i % 15 == 0:
+            cards.append(temp)
+            temp = []
+    
+    if temp:
+        questions.append(temp)
+
+    new_data = data
+    new_data["questions"] = questions
+    new_data["cards"] = cards
+
+    return new_data
 

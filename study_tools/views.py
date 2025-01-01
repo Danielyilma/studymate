@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny
 from django.shortcuts import get_object_or_404
 from .serializers import CourseSerializer, QuestionSerializer, CourseDetailsSerializer, CardSerializer
 from .models import Course
-from .task import generate_mutiple_questions, generate_cards
+from .task import generate_mutiple_questions, generate_cards, get_custom_response
 
 class CourseCreateView(generics.CreateAPIView):
     permission_classes = [AllowAny]
@@ -23,6 +23,13 @@ class CourseRetrieveView(generics.RetrieveAPIView):
     queryset = Course.objects.all()
     lookup_field = 'id'
 
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+
+        data = get_custom_response(serializer.data)
+
+        return Response(data, status=status.HTTP_200_OK)
 
 
 class QuestionGenerateView(APIView):
