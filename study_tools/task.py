@@ -51,7 +51,7 @@ def get_custom_response(data):
             temp = []
     
     if temp:
-        questions.append(temp)
+        cards.append(temp)
 
     new_data = data
     new_data["questions"] = questions
