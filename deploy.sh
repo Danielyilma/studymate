@@ -46,7 +46,7 @@ nginx_config="server {
 
 echo "$nginx_config" | sudo tee /etc/nginx/sites-available/studymate
 
-sudo ln -s /etc/nginx/sites-available/studymate /etc/nginx/sites-enabled
+sudo ln -s /etc/nginx/sites-available/studymate /etc/nginx/sites-enabled/
 
 sudo nginx -t
 sudo systemctl restart nginx
