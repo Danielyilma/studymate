@@ -39,7 +39,6 @@ class AI(BaseClient):
         
         if task == "study-card":
             result = self.generate_study_card(docs, self.llm)
-            raise ValueError(result)
             result = json.loads(result)
         elif task == "mutiple-choice":
             result = self.generate_mcq_from_text(docs, self.llm)
@@ -90,7 +89,7 @@ class AI(BaseClient):
 
         result = chain.run({"text": split_docs})
 
-        return str(result)
+        return str(result)[5:]
 
 
 
