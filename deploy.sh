@@ -16,6 +16,7 @@ After=network.target
 [Service]
 User=root
 Group=root
+Environment="PATH=/home/ubuntu/studymate/venv/bin"
 WorkingDirectory=/home/ubuntu/studymate/
 ExecStart=/home/ubuntu/studymate/venv/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/studymate/studymate.sock studymate.wsgi:application
 
