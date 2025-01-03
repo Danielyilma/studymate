@@ -61,7 +61,7 @@ class CardGenerateView(APIView):
         try:
             generate_cards(course)
         except Exception as e:
-            return Response({"error": str(e.with_traceback)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
         return Response({"status": "success"}, status=status.HTTP_200_OK)
 
