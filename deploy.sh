@@ -2,7 +2,7 @@
 
 # create and start a virtual environment
 python3 -m venv venv
-source venv/bin/activate
+source /home/ubuntu/studymate/venv/bin/activate
 
 pip install -r requirements.txt
 
