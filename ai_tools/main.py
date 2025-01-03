@@ -2,7 +2,6 @@ from langchain.docstore.document import Document
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.chains.summarize import load_summarize_chain
-import json
 from ai_tools.mixins import BaseClient
 from ai_tools.template import (
     prompt, refine_prompt_template,
@@ -39,10 +38,10 @@ class AI(BaseClient):
         
         if task == "study-card":
             result = self.generate_study_card(docs, self.llm)
-            result = json.loads(result)
+            result = self.parse_json_like_content(result)
         elif task == "mutiple-choice":
             result = self.generate_mcq_from_text(docs, self.llm)
-            result = json.loads(result)
+            result = self.parse_json_like_content(result)
         else:
             result = self.summerize_text(docs, self.llm)
 
@@ -78,7 +77,7 @@ class AI(BaseClient):
 
         result = chain.run({"text": split_docs})
 
-        return str(result)[7:-3]
+        return str(result)
 
     def generate_study_card(self, split_docs, llm):
         study_card_prompt = PromptTemplate(
@@ -89,7 +88,7 @@ class AI(BaseClient):
 
         result = chain.run({"text": split_docs})
 
-        return str(result)[5:]
+        return str(result)
 
 
 
