@@ -9,6 +9,7 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = ["id", "title", "created_at", "file"]
     
     def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
         instance = Course.objects.create(**validated_data)
         
         ai = AI()

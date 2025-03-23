@@ -1,11 +1,13 @@
 from django.db import models
 from base_model import TimeStampMixin
+from UserAccountManager.models import User
 
 
 class Course(TimeStampMixin, models.Model):
     title = models.CharField(max_length=255)
     note_content = models.TextField(blank=True, null=True)
     file = models.FileField(upload_to='uploads')
+    user = models.ForeignKey(User, related_name='courses', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
