@@ -24,6 +24,6 @@ jobs:
         echo "GEMNI_API_KEY=${{ secrets.GEMNI_API_KEY }}" >> studymate/.env
         echo "HOSTS=${{ secrets.HOSTS }}" >> studymate/.env
     - name: Build docker image
-      run: docker build -t studymate .
+      run: docker build -t danielyilma/studymate:latest .
     - name: Push to Dockerhub
       run: docker push danielyilma/studymate:latest
