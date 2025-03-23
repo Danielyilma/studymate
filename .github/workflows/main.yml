@@ -1,0 +1,21 @@
+name: deploy
+run-name: Deploy to AWS ECS instance
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - name: Login DockerHub
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+      run: docker login -u DOCKERHUB_USERNAME -p DOCKERHUB_PASSWORD
+
+    - name: Build docker image
+      run: docker build -t studymate .
+    - name: Push to Dockerhub
+      run: docker push danielyilma/studymate:latest
