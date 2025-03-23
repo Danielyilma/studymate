@@ -19,10 +19,11 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
       run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
+    - name: Create .env File
+      run: |
+        echo "GEMNI_API_KEY: ${{ secrets.GEMNI_API_KEY }}" >> studymate/.env
+        echo "HOSTS: ${{ secrets.HOSTS }}" >> studymate/.env
     - name: Build docker image
-      env:
-        GEMNI_API_KEY: ${{ secrets.GEMNI_API_KEY }}
-        HOSTS: ${{ secrets.HOSTS }}
       run: docker build -t studymate .
     - name: Push to Dockerhub
       run: docker push danielyilma/studymate:latest
