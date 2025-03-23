@@ -26,8 +26,9 @@ jobs:
     - name: Create .env File
       run: |
         cd ${{ github.workspace }}/studymate
-        sudo echo "GEMNI_API_KEY=${{ secrets.GEMNI_API_KEY }}" >> .env
-        sudo echo "HOSTS=${{ secrets.HOSTS }}" >> .env
+        echo "GEMNI_API_KEY=${{ secrets.GEMNI_API_KEY }}" | sudo tee -a .env > /dev/null
+        echo "HOSTS=${{ secrets.HOSTS }}" | sudo tee -a .env > /dev/null
+
 
     - name: Start Backend and Nginx Services
       run: |
