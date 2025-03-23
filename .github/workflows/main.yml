@@ -9,6 +9,10 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+    - name: Debug Directory Structure
+      run: ls -R
     - name: Login DockerHub
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -16,6 +20,6 @@ jobs:
       run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
     - name: Build docker image
-      run: docker build -t studymate -f studymate/Dockerfile studymate/
+      run: docker build -t studymate .
     - name: Push to Dockerhub
       run: docker push danielyilma/studymate:latest
