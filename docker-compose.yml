@@ -1,7 +1,7 @@
 version: "3"
 services:
   backend:
-    image: your_dockerhub_username/backend:latest
+    image: danielyilma/studymate:latest
     ports:
       - "8000:8000"
     build: .
