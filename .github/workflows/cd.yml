@@ -29,5 +29,6 @@ jobs:
         echo "HOSTS=${{ secrets.HOSTS }}" >> .env
 
     - name: Start Backend and Nginx Services
-      run: sudo docker-compose up -d --remove-orphans
-
+      run: |
+        cd $GITHUB_WORKSPACE
+        sudo docker-compose up -d --remove-orphans
