@@ -4,7 +4,6 @@ services:
     image: danielyilma/studymate:latest
     ports:
       - "8000:8000"
-    build: .
     environment:
       - DEBUG=True
     volumes:
