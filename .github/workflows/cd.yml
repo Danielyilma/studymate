@@ -1,0 +1,32 @@
+name: CD
+run-name: Deploy to AWS ECS instance
+on:
+  workflow_run:
+    workflows: ["deploy"]
+    types:
+      - completed
+jobs:
+  build:
+
+    runs-on: self-hosted
+    steps:
+
+    - name: install docker and docker compose
+      run: sudo apt install docker docker-compose -y
+  
+    - name: pull the code repository
+      run: sudo git clone https://github.com/Danielyilma/studymate.git && cd studymate
+
+    - name: remove the image
+      run: sudo docker remove danielyilma/studymate:latest
+
+    - name: pull docker image
+      run: sudo docker pull danielyilma/studymate:latest
+
+    - name: Create .env File
+      run: |
+        echo "GEMNI_API_KEY=${{ secrets.GEMNI_API_KEY }}" >> studymate/.env
+        echo "HOSTS=${{ secrets.HOSTS }}" >> studymate/.env
+
+    - name: start the backend and nginx services
+      run: sudo docker-compose up
