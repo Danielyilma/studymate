@@ -11,22 +11,23 @@ jobs:
     runs-on: self-hosted
     steps:
 
-    - name: install docker and docker compose
-      run: sudo apt install docker docker-compose -y
-  
-    - name: pull the code repository
-      run: sudo git clone https://github.com/Danielyilma/studymate.git && cd studymate
+    - name: Navigate to the Repository
+      run: cd $GITHUB_WORKSPACE
 
-    - name: remove the image
-      run: sudo docker remove danielyilma/studymate:latest
+
+    - name: Remove old Docker image (if exists)
+      run: |
+        sudo docker rmi -f danielyilma/studymate:latest || true
+
 
     - name: pull docker image
       run: sudo docker pull danielyilma/studymate:latest
 
     - name: Create .env File
       run: |
-        echo "GEMNI_API_KEY=${{ secrets.GEMNI_API_KEY }}" >> studymate/.env
-        echo "HOSTS=${{ secrets.HOSTS }}" >> studymate/.env
+        echo "GEMNI_API_KEY=${{ secrets.GEMNI_API_KEY }}" >> .env
+        echo "HOSTS=${{ secrets.HOSTS }}" >> .env
 
-    - name: start the backend and nginx services
-      run: sudo docker-compose up
+    - name: Start Backend and Nginx Services
+      run: sudo docker-compose up -d --remove-orphans
+
