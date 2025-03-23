@@ -1,0 +1,34 @@
+name: CD
+run-name: Deploy to AWS ECS instance
+on:
+  workflow_run:
+    workflows: ["deploy"]
+    types:
+      - completed
+jobs:
+  build:
+
+    runs-on: self-hosted
+    steps:
+
+    - name: Navigate to the Repository
+      run: cd $GITHUB_WORKSPACE
+
+
+    - name: Remove old Docker image (if exists)
+      run: |
+        sudo docker rmi -f danielyilma/studymate:latest || true
+
+
+    - name: pull docker image
+      run: sudo docker pull danielyilma/studymate:latest
+
+    - name: Create .env File
+      run: |
+        echo "GEMNI_API_KEY=${{ secrets.GEMNI_API_KEY }}" >> .env
+        echo "HOSTS=${{ secrets.HOSTS }}" >> .env
+
+    - name: Start Backend and Nginx Services
+      run: |
+        cd ${{ github.workspace }}/studymate
+        sudo docker-compose up -d --remove-orphans
