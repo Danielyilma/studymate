@@ -11,3 +11,4 @@ urlpatterns = [
     path('oauth/google/redirect/', GoogleOAuth2RedirectView.as_view(), name='google-oauth'),
     path('oauth/google/callback/', GoogleOAuth2CallbackView.as_view(), name='google-redirect'),
 ]
+ 

@@ -6,3 +6,4 @@ urlpatterns = [
     path('courses/', include('study_tools.urls')),
     path('users/', include('UserAccountManager.urls')),
 ]
+ 
