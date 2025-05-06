@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from ai_tools.main import AI
-from .models import Course, Question, Card, Answer
+from .models import Course, Question, Card, Answer, Session
 
 class CourseSerializer(serializers.ModelSerializer):
 
@@ -19,6 +19,19 @@ class CourseSerializer(serializers.ModelSerializer):
             instance.save()
         
         return instance
+
+class SessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Session
+        fields = ['id', 'name', 'expire_date']
+    
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        
+        # vector store id must be set here
+        
+        return super().create(validated_data)
+
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
