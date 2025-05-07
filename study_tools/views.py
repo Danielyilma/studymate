@@ -4,9 +4,67 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
-from .serializers import CourseSerializer, QuestionSerializer, CourseDetailsSerializer, CardSerializer
-from .models import Course
+from .serializers import CourseSerializer, QuestionSerializer, CourseDetailsSerializer, CardSerializer, SessionSerializer
+from .models import Course, Session
 from .task import generate_mutiple_questions, generate_cards, get_custom_response
+
+
+
+class SessionCreateView(generics.CreateAPIView):
+    serializer_class = SessionSerializer
+    permission_classes = [IsAuthenticated]
+  
+
+class SessionUpdateView(generics.UpdateAPIView):
+    queryset = Session.objects.all()
+    serializer_class = SessionSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'id'
+
+class SessionDeleteView(generics.DestroyAPIView):
+    queryset = Session.objects.all()
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'id'
+    
+    def delete(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        if instance.user != request.user:
+            raise PermissionDenied("Unauthorized")
+        
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+class SessionListView(generics.UpdateAPIView):
+    serializer_class = SessionSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        user = self.request.user 
+        return Session.objects.filter(user=user).order_by('-created_at')
+
+
+class SessionRetrieveView(generics.UpdateAPIView):
+    queryset = Session.objects.all()
+    serializer_class = SessionSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'id'
+    
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        if instance.user != request.user:
+            raise PermissionDenied("Unauthorized")
+
+        serializer = self.get_serializer(instance)
+        data = get_custom_response(serializer.data)
+
+        return Response(data, status=status.HTTP_200_OK)
+
+
+
 
 class CourseCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
