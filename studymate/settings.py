@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'UserAccountManager',
     'study_tools',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -78,8 +79,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'studymate.wsgi.application'
-
+# WSGI_APPLICATION = 'studymate.wsgi.application'
+ASGI_APPLICATION = 'studymate.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
