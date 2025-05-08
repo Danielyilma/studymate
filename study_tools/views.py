@@ -1,11 +1,11 @@
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
-from .serializers import CourseSerializer, QuestionSerializer, CourseDetailsSerializer, CardSerializer, SessionSerializer
-from .models import Course, Session
+from .serializers import CourseSerializer, QuestionSerializer, CourseDetailsSerializer, CardSerializer, SessionSerializer, FileSerializer
+from .models import Course, Session, File
 from .task import generate_mutiple_questions, generate_cards, get_custom_response
 
 
@@ -62,12 +62,22 @@ class SessionRetrieveView(generics.UpdateAPIView):
         data = get_custom_response(serializer.data)
 
         return Response(data, status=status.HTTP_200_OK)
+    
+
+class FileCreateView(generics.CreateAPIView):
+    queryset = File.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = FileSerializer
+
+
+
+#########################################################################
 
 
 
 
 class CourseCreateView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     serializer_class = CourseSerializer
 
 

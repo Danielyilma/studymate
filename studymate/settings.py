@@ -91,6 +91,8 @@ DATABASES = {
     }
 }
 
+# Celery settings
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -167,3 +169,5 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = ''
 SOCIAL_AUTH_GOOGLE_OAUTH2_AUTHORIZATION_ENDPOINT = 'https://accounts.google.com/o/oauth2/v2/auth'
 GOOGLE_ACCESS_TOKEN_OBTAIN_URI = 'https://oauth2.googleapis.com/token'
 # SPECTACULAR_SETTINGS
+
+CLOUDINARY_UPLOAD_URL= "https://res.cloudinary.com/dddktbga9/raw/upload/"

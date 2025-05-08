@@ -1,5 +1,24 @@
+import cloudinary, cloudinary.uploader
+from django.conf import settings
 from ai_tools.main import AI
-from .models import Question, Answer, Card
+from .models import Question, Answer, Card, File, Course, Session
+from celery import shared_task
+import io
+
+
+@shared_task
+def upload_file(file_content, file_name, id):
+    cloudinary.config(secure=True)
+    file_data = cloudinary.uploader.upload(
+        io.BytesIO(file_content), resource_type="raw", 
+        access_mode="public", filename_override=file_name
+    )
+
+    url = file_data.get("secure_url")
+    file_instance = File.objects.filter(id=id).first()
+    file_instance.url = url
+    file_instance.save()
+
 
 def generate_mutiple_questions(course):
     if course.file:
