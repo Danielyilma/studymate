@@ -89,6 +89,11 @@ class AI(BaseClient):
         result = chain.run({"text": split_docs})
 
         return str(result)
+    
+    
+    def ai_chat(self, human_message):
+        pass
+        
 
 
 
