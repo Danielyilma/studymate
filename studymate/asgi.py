@@ -26,8 +26,15 @@ from .auth import JWTAuthMiddleware
 application = ProtocolTypeRouter({
     "http" : get_asgi_application(),
     "websocket" : AllowedHostsOriginValidator(
-        JWTAuthMiddleware(
-            URLRouter( urls.websocket_urlpatterns )
-        )
+        URLRouter( urls.websocket_urlpatterns )
     )
 })
+
+# application = ProtocolTypeRouter({
+#     "http" : get_asgi_application(),
+#     "websocket" : AllowedHostsOriginValidator(
+#         JWTAuthMiddleware(
+#             URLRouter( urls.websocket_urlpatterns )
+#         )
+#     )
+# })
