@@ -3,38 +3,10 @@ from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.chains.summarize import load_summarize_chain
 from ai_tools.mixins import BaseClient
-from .file_tools import load_pdf_to_documents_from_bytes
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain_community.vectorstores import FAISS, Pinecone
-from langchain.memory import ConversationBufferWindowMemory
 from ai_tools.template import (
     prompt, refine_prompt_template,
-    mcq_prompt_template, study_card_prompt_template, chat_template
+    mcq_prompt_template, study_card_prompt_template
 )
-import os
-from dotenv import load_dotenv
-
-from langchain.prompts import ChatPromptTemplate
-from langchain_core.runnables import RunnablePassthrough
-from langchain.chains import ConversationalRetrievalChain
-from langchain.schema.runnable import RunnableMap
-from langchain.memory import ConversationBufferMemory
-from langchain.schema import Document
-from langchain_core.retrievers import BaseRetriever
-
-
-load_dotenv()
-
-class EmptyRetriever(BaseRetriever):
-    def get_relevant_documents(self, query: str, **kwargs) -> list[Document]:
-        return [] 
-    async def aget_relevant_documents(self, query: str, **kwargs) -> list[Document]:
-        return []
-
-
-INDEX = os.getenv('PINECONE_API_KEY')
-API_KEY = os.getenv('GEMNI_API_KEY')
-
 
 class AI(BaseClient):
     tasks = {
