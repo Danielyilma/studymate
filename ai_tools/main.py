@@ -5,7 +5,7 @@ from langchain.chains.summarize import load_summarize_chain
 from ai_tools.mixins import BaseClient
 from ai_tools.template import (
     prompt, refine_prompt_template,
-    mcq_prompt_template, study_card_prompt_template
+    mcq_prompt_template, study_card_prompt_template, 
 )
 
 class AI(BaseClient):
@@ -17,6 +17,8 @@ class AI(BaseClient):
 
     def __init__(self):
         super().__init__()
+        self.session_vector_stores = {}
+        self.user_memories = {}
 
     def run(self, path, task="summerize"):
         '''
@@ -89,6 +91,8 @@ class AI(BaseClient):
         result = chain.run({"text": split_docs})
 
         return str(result)
+    
+
 
 
 

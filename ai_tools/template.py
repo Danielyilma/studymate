@@ -55,3 +55,20 @@ study_card_prompt_template = """
     TEXT: {text}
     JSON_RESPONSE:
     """
+
+chat_template = """
+    You are an AI assistant designed to help university students understand the content of the document they uploaded.
+    Use the provided chat history and the document context to give clear, concise, and informative answers.
+
+    After answering, encourage the student to ask any follow-up questions related to the conversation to help them better understand the material.
+
+    Chat History:
+    {history}
+
+    Document Content:
+    {context}
+
+    Question:
+    {question}
+
+    Answer:"""

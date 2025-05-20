@@ -5,7 +5,9 @@ from ai_tools.main import AI
 from .models import Question, Answer, Card, File, Course, Session
 from celery import shared_task
 import io, os, tempfile, requests
+from ai_tools.faiss_loader import SessionVectorStore
 
+sv = SessionVectorStore()
 
 @shared_task
 def upload_file(file_content, file_name, id):
@@ -20,6 +22,8 @@ def upload_file(file_content, file_name, id):
     file_instance.url = url
     file_instance.save()
 
+    print(file_instance.session , "my session")
+    sv.store_embeddings(url, str(file_instance.session.id))
     generate_questions(id)
 
 @shared_task
