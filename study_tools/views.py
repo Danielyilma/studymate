@@ -3,10 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.pagination import LimitOffsetPagination
 from django.shortcuts import get_object_or_404
-from .serializers import CourseSerializer, QuestionSerializer, CourseDetailsSerializer, CardSerializer, SessionSerializer, FileSerializer
+from .serializers import *
 from .models import Course, Session, File
-from .task import generate_mutiple_questions, generate_cards, get_custom_response
 
 
 
@@ -68,6 +68,31 @@ class FileCreateView(generics.CreateAPIView):
     queryset = File.objects.all()
     permission_classes = [IsAuthenticated]
     serializer_class = FileSerializer
+
+
+class SessionListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = SessionSerializer
+
+    def get_queryset(self):
+        user = self.request.user 
+        return Session.objects.filter(user=user).order_by('-created_at')
+
+
+class QuestionListView(generics.ListAPIView):
+    queryset = Question.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = QuestionSerializer
+    pagination_class = LimitOffsetPagination
+    lookup_field = "session__id"
+
+
+class CardListView(generics.ListAPIView):
+    queryset = Card.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = CardSerializer
+    pagination_class = LimitOffsetPagination
+    lookup_field = "session__id"
 
 
 

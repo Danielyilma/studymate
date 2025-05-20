@@ -8,7 +8,7 @@ import json
 
 class BaseClient:
     api_key = settings.GOOGLE_API_KEY
-    model = 'gemini-1.5-pro-latest'
+    model = 'gemini-1.5-flash'
     llm = GoogleGenerativeAI(model=model, google_api_key=api_key, verbose=True)
 
     def extract(self, file_path):
