@@ -20,21 +20,18 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.security.websocket import AllowedHostsOriginValidator
 from chat import urls
 from .auth import JWTAuthMiddleware 
-
+from channels.sessions import SessionMiddlewareStack
 
 
 application = ProtocolTypeRouter({
-    "http" : get_asgi_application(),
-    "websocket" : AllowedHostsOriginValidator(
-        URLRouter( urls.websocket_urlpatterns )
+    "http": get_asgi_application(),
+    "websocket": AllowedHostsOriginValidator(
+        SessionMiddlewareStack(  
+            JWTAuthMiddleware(
+                URLRouter(urls.websocket_urlpatterns)
+            )
+        )
     )
 })
 
-# application = ProtocolTypeRouter({
-#     "http" : get_asgi_application(),
-#     "websocket" : AllowedHostsOriginValidator(
-#         JWTAuthMiddleware(
-#             URLRouter( urls.websocket_urlpatterns )
-#         )
-#     )
-# })
+

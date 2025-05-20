@@ -63,7 +63,7 @@ chat_template = """
     After answering, encourage the student to ask any follow-up questions related to the conversation to help them better understand the material.
 
     Chat History:
-    {chat_history}
+    {history}
 
     Document Content:
     {context}

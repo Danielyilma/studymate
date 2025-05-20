@@ -5,7 +5,7 @@ from langchain.chains.summarize import load_summarize_chain
 from ai_tools.mixins import BaseClient
 from ai_tools.template import (
     prompt, refine_prompt_template,
-    mcq_prompt_template, study_card_prompt_template
+    mcq_prompt_template, study_card_prompt_template, 
 )
 
 class AI(BaseClient):

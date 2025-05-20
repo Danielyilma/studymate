@@ -10,8 +10,9 @@ from typing import List
 from dotenv import load_dotenv
 from langchain_core.documents import Document
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain.document_loaders import PyMuPDFLoader, TextLoader, Docx2txtLoader
+from langchain_community.document_loaders import PyMuPDFLoader, TextLoader, Docx2txtLoader
 from pinecone import Pinecone
+
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -22,9 +23,10 @@ PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 PINECONE_ENV = os.getenv("PINECONE_ENV")
 PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME")
 
-# Pinecone init
+
 pc = Pinecone(api_key=PINECONE_API_KEY)
 pinecone_index = pc.Index(PINECONE_INDEX_NAME)
+
 
 class SessionVectorStore:
     """A class to manage document embeddings using FAISS (local) and Pinecone (cloud)."""
