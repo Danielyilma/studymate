@@ -45,7 +45,7 @@ class SessionSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ['id', 'text', 'is_correct']
+        fields = ['id', 'content', 'is_correct']
 
 class QuestionSerializer(serializers.ModelSerializer):
     answers = AnswerSerializer(many=True)  # Nest answers

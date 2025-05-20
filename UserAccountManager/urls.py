@@ -1,6 +1,6 @@
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.urls import path
-from .views import SignUPView, GoogleOAuth2RedirectView, GoogleOAuth2CallbackView, CustomTokenObtainPairView
+from .views import SignUPView, GoogleOAuth2RedirectView, GoogleOAuth2CallbackView, CustomTokenObtainPairView, GoogleOauth2MobileAuth
 
 urlpatterns = [
     path('signup/', SignUPView.as_view(), name='sign-up'),
@@ -10,5 +10,5 @@ urlpatterns = [
     # social authentication
     path('oauth/google/redirect/', GoogleOAuth2RedirectView.as_view(), name='google-oauth'),
     path('oauth/google/callback/', GoogleOAuth2CallbackView.as_view(), name='google-redirect'),
+    path('oauth/google/mobile/', GoogleOauth2MobileAuth.as_view(), name="google-mobile-oauth")
 ]
- 

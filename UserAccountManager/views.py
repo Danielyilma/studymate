@@ -80,7 +80,41 @@ class GoogleOAuth2CallbackView(APIView):
         app_tokens = google_oauth.getTokenForUser(user_info)
 
         return Response({'access_token': str(app_tokens.access_token), 'refresh_token': str(app_tokens)})
+
+
+class GoogleOauth2MobileAuth(APIView):
+    permission_classes = [AllowAny]
+
+    class InnerSerializer(serializers.Serializer):
+        id_token = serializers.CharField(required=True)
+        access_token = serializers.CharField(required=True)
+        error = serializers.CharField(required=False)
     
+
+    def post(self, request):
+        serializer = self.InnerSerializer(data=request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as e:
+            print(e)
+        data = serializer.validated_data
+        id_token = data.get('id_token')
+        access_token = data.get('access_token')
+
+        if not id_token or not access_token:
+            return Response({'error': "Both id_token and access_token are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        google_oauth = GoogleOAuth2Service()
+
+        try:
+            user_info = google_oauth.decodeIdToken({'id_token': id_token})
+        except Exception as e:
+            return Response({'error': f"Invalid ID token: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+
+        app_tokens = google_oauth.getTokenForUser(user_info)
+
+        return Response({'access_token': str(app_tokens.access_token), 'refresh_token': str(app_tokens)})
+
 
 @extend_schema(
     summary="Login User",

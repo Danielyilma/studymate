@@ -6,7 +6,7 @@ from .models import User
 from .serializers import UserSerializer
 import secrets
 import requests
-import jwt
+from jose import jwt
 
 class GoogleOAuth2Service():
     ''' google service class for social login'''
@@ -16,6 +16,7 @@ class GoogleOAuth2Service():
     redirect_uri = settings.SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI
     google_auth_endpoint = settings.SOCIAL_AUTH_GOOGLE_OAUTH2_AUTHORIZATION_ENDPOINT
     google_token_obtain_uri = settings.GOOGLE_ACCESS_TOKEN_OBTAIN_URI
+    google_jwks_url = "https://www.googleapis.com/oauth2/v3/certs"  # URL for Google's public keys
 
     def getAuthorizationUri(self):
         ''' Get the Google authorization uri'''
@@ -51,12 +52,56 @@ class GoogleOAuth2Service():
         tokens = response.json()
         return tokens
 
-    def decodeIdToken(self, token):
-        '''decode idtoken that is returned form google'''
-        id_token = token.get('id_token')
-        decoded_token = jwt.decode(jwt=id_token, options={"verify_signature": False})
 
-        return decoded_token
+    def decodeIdToken(self, token):
+        '''Validate and decode the id_token from Google'''
+        id_token = token.get('id_token')
+
+        # Decode the ID Token
+        try:
+            # First, fetch Google's public keys
+            response = requests.get(self.google_jwks_url)
+            jwks = response.json()
+            
+            # Decode JWT token and get the header
+            unverified_header = jwt.get_unverified_header(id_token)
+            
+            if unverified_header is None:
+                raise ValueError("Unable to decode token header")
+
+            # Get the public key that corresponds to the token's key ID
+            rsa_key = {}
+            for key in jwks['keys']:
+                if key['kid'] == unverified_header['kid']:
+                    rsa_key = {
+                        'kty': key['kty'],
+                        'kid': key['kid'],
+                        'use': key['use'],
+                        'n': key['n'],
+                        'e': key['e']
+                    }
+                    break
+
+            if not rsa_key:
+                raise ValueError("Unable to find appropriate key")
+
+            # Now, use the RSA key to validate and decode the ID token
+            payload = jwt.decode(id_token, rsa_key, algorithms=['RS256'], audience=self.client_id)
+
+            # Ensure that the token is valid (check for 'iss' and 'aud' claims)
+            if payload.get('iss') != 'https://accounts.google.com':
+                raise ValueError("Invalid issuer")
+            if payload.get('aud') != self.client_id:
+                raise ValueError("Invalid audience")
+
+            return payload  # This will contain user info from the ID token
+        
+        except jwt.ExpiredSignatureError:
+            raise ValueError("Token is expired")
+        except jwt.JWTClaimsError:
+            raise ValueError("Invalid claims, please check the audience and issuer")
+        except Exception as e:
+            raise ValueError(f"Unable to parse token: {str(e)}")
     
     def getTokenForUser(self, user_info):
         '''creating access and refresh token for the user'''

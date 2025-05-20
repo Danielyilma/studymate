@@ -4,15 +4,20 @@ from .views import *
 urlpatterns = [
     # file upload url
     path("uploads/", FileCreateView.as_view(), name='create-document'),
+    path("", SessionListView.as_view(), name='list-sessions'),
+    path("<int:id>/questions", QuestionListView.as_view(), name="retrieve-questions"),
+    path("<int:id>/cards", CardListView.as_view(), name="retrieve-cards"),
 
-    #
-    path("", CourseListView.as_view(), name='list-courses'),
+
+
+    # path("", CourseListView.as_view(), name='list-courses'),
     path("<int:id>", CourseRetrieveView.as_view(), name="retrieve-course"),
     path("<int:id>/update", CourseUpdateView.as_view(), name="update-course"),
     path("<int:id>/delete", CourseDeleteView.as_view(), name="delete-course"),
     path("<int:id>/generate-q", QuestionGenerateView.as_view(), name="generate-question"),
     path("<int:id>/generate-c", CardGenerateView.as_view(), name="generate-card"),
     
+
     # session urls
     path("create/", SessionCreateView.as_view(), name="create-session"),
     path("", SessionListView.as_view(), name='list-sessions'),
