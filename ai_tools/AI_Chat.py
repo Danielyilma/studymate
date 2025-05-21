@@ -17,6 +17,7 @@ from langchain_core.output_parsers import StrOutputParser
 from ai_tools.faiss_loader import SessionVectorStore
 from study_tools.models import File, Session
 from langchain_community.document_loaders import PyMuPDFLoader, TextLoader, Docx2txtLoader
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -27,8 +28,8 @@ class AIChat(BaseClient):
         self.vector_store = session_vector_store
         self.max_history = max_history
         self.redis_client = redis.Redis(
-            host='localhost',
-            port=6379,
+            host=settings.REDIS_HOST,
+            port=settings.REDIS_PORT,
             db=0,
             decode_responses=True
         )

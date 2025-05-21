@@ -28,7 +28,14 @@ jobs:
         cd ${{ github.workspace }}/studymate
         echo "GEMNI_API_KEY=${{ secrets.GEMNI_API_KEY }}" | sudo tee -a .env > /dev/null
         echo "HOSTS=${{ secrets.HOSTS }}" | sudo tee -a .env > /dev/null
-
+        echo "CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}" | sudo tee -a .env > /dev/null
+        echo "SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=${{ secrets.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY }}" | sudo tee -a .env > /dev/null
+        echo "SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=${{ secrets.SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET }}" | sudo tee -a .env > /dev/null
+        echo "PINECONE_API_KEY=${{ secrets.PINECONE_API_KEY }}" | sudo tee -a .env > /dev/null
+        echo "PINECONE_ENV=${{ secrets.PINECONE_ENV }}" | sudo tee -a .env > /dev/null
+        echo "PINECONE_INDEX_NAME=${{ secrets.PINECONE_INDEX_NAME }}" | sudo tee -a .env > /dev/null
+        echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" | sudo tee -a .env > /dev/null
+        echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" | sudo tee -a .env > /dev/null
 
     - name: Start Backend and Nginx Services
       run: |

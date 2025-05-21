@@ -126,15 +126,21 @@ TEMPLATES = [
 # WSGI_APPLICATION = 'studymate.wsgi.application'
 ASGI_APPLICATION = 'studymate.asgi.application'
 
+
+REDIS_HOST = os.getenv('REDIS_HOST')
+REDIS_PORT = os.getenv('REDIS_PORT')
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],  
+            "hosts": [(REDIS_HOST, REDIS_PORT)],  
         },
     },
 }
 
+# Celery settings
+CELERY_BROKER_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -148,8 +154,6 @@ DATABASES = {
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
-# Celery settings
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
