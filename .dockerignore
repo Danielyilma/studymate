@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment
+.env
+*.env
+.venv/
+venv/
+
+# Build
+*.egg-info/
+dist/
+build/
+
+# Git
+.git/
+.gitignore
+
+# Logs and temp
+*.log
+*.sqlite3
+*.db
+
+# Node (if any frontend)
+node_modules/
+
+# OS-specific
+.DS_Store
+Thumbs.db

@@ -6,6 +6,8 @@ services:
       - "8000:8000"
     environment:
       - DEBUG=True
+    depends_on:
+      - redis
     volumes:
       - .:/app
   
@@ -18,4 +20,18 @@ services:
     # command: ["sh", "-c", "mkdir -p /etc/nginx/sites-enabled && ln -s /etc/nginx/sites-available/studymate.conf /etc/nginx/sites-enabled/studymate.conf && nginx -g 'daemon off;'"]
     depends_on:
       - backend
+  
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    
+  celery:
+    image: danielyilma/studymate:latest
+    command: celery -A studymate worker --loglevel=INFO
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+    
     

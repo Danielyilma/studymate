@@ -10,7 +10,7 @@
             "request": "launch",
             "django": true,
             "autoStartBrowser": false,
-            "program": "${workspaceFolder}/smv/bin/daphne",
+            "program": "${workspaceFolder}/venv/bin/daphne",
             "args": [
                 "studymate.asgi:application"
             ],
