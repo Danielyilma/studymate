@@ -14,8 +14,12 @@ jobs:
     - name: Navigate to the Repository
       run: cd $GITHUB_WORKSPACE
 
-    - name: Download docker
-      run: sudo apt install docker -y
+    - name: Install Docker
+      run: |
+        curl -fsSL https://get.docker.com -o get-docker.sh
+        sudo sh get-docker.sh
+        sudo usermod -aG docker $USER
+        docker --version
 
     - name: Remove old Docker image (if exists)
       run: |
