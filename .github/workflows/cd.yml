@@ -42,7 +42,7 @@ jobs:
 
     - name: Create .env File
       run: |
-        cd ${{ github.workspace }}
+        cd ${{ github.workspace }}/studymate/studymate
         echo "GEMNI_API_KEY=${{ secrets.GEMNI_API_KEY }}" | sudo tee -a .env > /dev/null
         echo "HOSTS=${{ secrets.HOSTS }}" | sudo tee -a .env > /dev/null
         echo "CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}" | sudo tee -a .env > /dev/null
@@ -56,6 +56,6 @@ jobs:
 
     - name: Start Backend and Nginx Services
       run: |
-        cd ${{ github.workspace }}
+        cd ${{ github.workspace }}/studymate/studymate
         ls -la
         sudo docker-compose up -d --remove-orphans
