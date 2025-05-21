@@ -45,5 +45,5 @@ jobs:
 
     - name: Start Backend and Nginx Services
       run: |
-        cd ${{ github.workspace }}/studymate
+        cd ${{ github.workspace }}
         sudo docker-compose up -d --remove-orphans
