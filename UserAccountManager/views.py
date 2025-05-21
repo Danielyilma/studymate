@@ -5,7 +5,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
-from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.utils import extend_schema, OpenApiParameter, inline_serializer
 from drf_spectacular.types import OpenApiTypes 
 from .serializers import UserSerializer, CustomTokenObtainPairSerializer
 from .services import GoogleOAuth2Service
@@ -81,7 +81,24 @@ class GoogleOAuth2CallbackView(APIView):
 
         return Response({'access_token': str(app_tokens.access_token), 'refresh_token': str(app_tokens)})
 
-
+@extend_schema(
+    summary="Google login Mobile (Android or Ios)",
+    description='Endpoint to log user into the system, with google credential access and is token',
+    request=inline_serializer(
+        name="GoogleLoginRequest",
+        fields={
+            "id_token": serializers.CharField(),
+            "access_token": serializers.CharField(required=False)
+        }
+    ),
+    responses={200: inline_serializer(
+        name="GoogleLoginResponse",
+        fields={
+            "refresh": serializers.CharField(),
+            "access": serializers.CharField(),
+        }
+    )}
+)
 class GoogleOauth2MobileAuth(APIView):
     permission_classes = [AllowAny]
 
@@ -93,10 +110,7 @@ class GoogleOauth2MobileAuth(APIView):
 
     def post(self, request):
         serializer = self.InnerSerializer(data=request.data)
-        try:
-            serializer.is_valid(raise_exception=True)
-        except Exception as e:
-            print(e)
+        serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
         id_token = data.get('id_token')
         access_token = data.get('access_token')
