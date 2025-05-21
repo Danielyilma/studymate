@@ -31,7 +31,7 @@ jobs:
 
     - name: Create .env File
       run: |
-        cd ${{ github.workspace }}/studymate
+        cd ${{ github.workspace }}
         echo "GEMNI_API_KEY=${{ secrets.GEMNI_API_KEY }}" | sudo tee -a .env > /dev/null
         echo "HOSTS=${{ secrets.HOSTS }}" | sudo tee -a .env > /dev/null
         echo "CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }}" | sudo tee -a .env > /dev/null
