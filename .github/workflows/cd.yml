@@ -14,6 +14,8 @@ jobs:
     - name: Navigate to the Repository
       run: cd $GITHUB_WORKSPACE
 
+    - name: Download docker
+      run: sudo apt install docker
 
     - name: Remove old Docker image (if exists)
       run: |
