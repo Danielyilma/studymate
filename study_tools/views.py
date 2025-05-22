@@ -23,6 +23,7 @@ class SessionUpdateView(generics.UpdateAPIView):
 
 class SessionDeleteView(generics.DestroyAPIView):
     queryset = Session.objects.all()
+    serializer_class = SessionSerializer
     permission_classes = [IsAuthenticated]
     lookup_field = 'id'
     

@@ -165,6 +165,15 @@ REST_FRAMEWORK = {
 }
 
 
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'AuctionPulse API',
+    'DESCRIPTION': 'A RESTful API for managing online auctions, enabling users to create listings,\
+ place bids, and track auction statuses.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
