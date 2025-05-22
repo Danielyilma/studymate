@@ -9,6 +9,10 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
+    - name: Fix file ownership
+      run: |
+        sudo chown -R $USER:$USER $GITHUB_WORKSPACE
+  
     - name: Checkout Repository
       uses: actions/checkout@v4
 

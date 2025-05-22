@@ -13,6 +13,8 @@ COPY . /app
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN python3 manage.py collectstatic --noinput
+
 EXPOSE 8000
 
 CMD ["daphne", "studymate.asgi:application"]
