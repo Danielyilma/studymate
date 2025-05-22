@@ -91,3 +91,4 @@ db.sqlite3
 uploads/
 venv/
 .vscode
+staticfiles
