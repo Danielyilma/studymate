@@ -74,7 +74,7 @@ class GoogleOAuth2CallbackView(APIView):
         google_oauth = GoogleOAuth2Service()
         google_tokens = google_oauth.getTokens(code)
         try:
-            user_info = google_oauth.decodeIdToken(google_tokens)
+            user_info = google_oauth.decodeToken(google_tokens)
         except Exception as e:
             return Response({'error': "invalid token type"}, status=status.HTTP_400_BAD_REQUEST)
         app_tokens = google_oauth.getTokenForUser(user_info)

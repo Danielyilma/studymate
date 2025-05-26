@@ -7,6 +7,7 @@ from .serializers import UserSerializer
 import secrets
 import requests
 from jose import jwt
+import jwt as jw
 
 class GoogleOAuth2Service():
     ''' google service class for social login'''
@@ -51,6 +52,13 @@ class GoogleOAuth2Service():
 
         tokens = response.json()
         return tokens
+
+    def decodeToken(self, token):
+        '''decode idtoken that is returned form google'''
+        id_token = token.get('id_token')
+        decoded_token = jw.decode(jwt=id_token, options={"verify_signature": False})
+
+        return decoded_token
 
 
     def decodeIdToken(self, token):
