@@ -82,8 +82,8 @@ class GoogleOAuth2CallbackView(APIView):
 
 
         response = redirect("https://v0-animated-learning-platform.vercel.app")
-        response.set_cookie("access_token", str(app_tokens.access_token), httponly=True, secure=True, samesite='Lax')
-        response.set_cookie("refresh_token", str(app_tokens), httponly=True, secure=True, samesite='Lax')
+        response.set_cookie("access_token", str(app_tokens.access_token), httponly=True, secure=True, samesite='None')
+        response.set_cookie("refresh_token", str(app_tokens), httponly=True, secure=True, samesite='None')
         return response
 
 @extend_schema(
