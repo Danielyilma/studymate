@@ -5,6 +5,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+from django.shortcuts import redirect
 from drf_spectacular.utils import extend_schema, OpenApiParameter, inline_serializer
 from drf_spectacular.types import OpenApiTypes 
 from .serializers import UserSerializer, CustomTokenObtainPairSerializer
@@ -79,7 +80,11 @@ class GoogleOAuth2CallbackView(APIView):
             return Response({'error': "invalid token type"}, status=status.HTTP_400_BAD_REQUEST)
         app_tokens = google_oauth.getTokenForUser(user_info)
 
-        return Response({'access_token': str(app_tokens.access_token), 'refresh_token': str(app_tokens)})
+
+        response = redirect("https://v0-animated-learning-platform.vercel.app")
+        response.set_cookie("access_token", str(app_tokens.access_token), httponly=True, secure=True, samesite='Lax')
+        response.set_cookie("refresh_token", str(app_tokens), httponly=True, secure=True, samesite='Lax')
+        return response
 
 @extend_schema(
     summary="Google login Mobile (Android or Ios)",
